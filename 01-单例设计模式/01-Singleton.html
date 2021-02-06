@@ -1,0 +1,49 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singleton</title>
+</head>
+
+<body>
+    <!-- 
+        单例设计模式
+            特点: 唯一， 只实例化一个实例
+            适用场景: 自定义弹出窗，每次子需要改变其内容，外部的容器还是原本的容器
+    -->
+
+    <script>
+        // 如果实例不存在，就返回 new 实例， 如果存在，就返回实例
+
+        const popUps = (function(){
+
+            let instance = null;
+
+            function Instance() {
+                this.name = 'jack';
+            }
+
+            return function Singleton() {
+                if(!instance) return instance = new Instance()
+                return instance;
+            }
+        })()
+
+
+        const p1 = popUps()
+        const p2 = popUps()
+
+
+        console.log(p1, p2);
+
+        console.log(p1 === p2); // true
+
+    </script>
+    <!-- 
+        todo 永远保证返回的是同一个实例
+    -->
+</body>
+
+</html>
