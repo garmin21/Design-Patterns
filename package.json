@@ -16,5 +16,13 @@
   "bugs": {
     "url": "https://github.com/garmin21/Design-Patterns/issues"
   },
-  "homepage": "https://github.com/garmin21/Design-Patterns#readme"
+  "homepage": "https://github.com/garmin21/Design-Patterns#readme",
+  "config": {
+    "commitizen": {
+      "path": "git-cz"
+    }
+  },
+  "devDependencies": {
+    "git-cz": "^4.7.6"
+  }
 }
