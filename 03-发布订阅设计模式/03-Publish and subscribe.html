@@ -1,0 +1,114 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03-Publish and subscribe</title>
+</head>
+
+<body>
+    <!-- 
+        发布订阅设计模式：
+            发布者: 发布一则消息，通知订阅者，我要买书，然后把钱付了
+            订阅者：订阅者接收到发布者的通知后，开始生成订单，然后接待下一位顾客，书本上架了后，通知订阅者，过来拿书
+
+        例如： 事件监听就是一种 发布-订阅模式的应用 (addEventListener)
+
+    -->
+
+    <script>
+
+        class Subscribe {
+
+            name = '员工';
+            eventName = '';
+            constructor(name) {
+                this.name = name;
+                this.eventList = {};
+            }
+
+            get isType() {
+                return Boolean(this.eventList[this.eventName]);
+            }
+
+            on(type, fn) {
+                this.eventName = type; // type 就是eventName的别名
+                if(!this.isType){
+                    this.eventList[type] = [fn];
+                    return;
+                }
+
+                this.eventList[type].push(fn);                
+
+            }
+
+            off(type, fn) {
+                this.eventName = type;
+                if(!this.isType) throw Error('你斌没有订阅这本书!');
+                // 无参数2，代表全部取消订阅的方法
+                if(!fn) {
+                    delete this.eventList[type];
+                    return;
+                }
+
+                // 有参数2
+                this.eventList[type] = this.eventList[type].filter(itemFn => itemFn !== fn);
+
+            }
+
+            emit(type) {
+                this.eventName = type;
+                if(!this.isType) throw Error('顾客没有下这个订单买书');
+                this.eventList[type].forEach(itemFn => itemFn());
+            }
+        }
+
+
+        const s = new Subscribe();
+
+        s.on('买神奇宝贝书的事件', sued);
+        
+        s.on('买神奇宝贝书的事件', youZh);
+
+        s.on('买数码宝贝的事件', yuan)
+
+        // s.off('买神奇宝贝书的事件') // 这种所有的神奇宝贝书我都不想买
+        // 不想买神奇宝贝书了，邮政快递太慢了
+        s.off('买神奇宝贝书的事件', youZh) // 邮政太慢了，我只想要顺丰快的这一本书
+        // s.off('买神奇宝贝书的事件', sued) // 邮政太慢了，我只想要顺丰快的这一本书
+
+
+        // 买了书，得通知顾客过来拿书啊
+        s.emit('买数码宝贝的事件')
+
+
+
+
+        function youZh() {
+            console.log('神奇宝贝书已通过邮政快递发货！！！')
+        }
+
+        function sued() {
+            console.log('神奇宝贝书已通过顺丰快递发货！！！')
+        }
+
+
+        function yuan() {
+            console.log('数码宝贝已通过圆通快递发货！！！')
+        }
+
+
+
+
+
+
+        console.log(s);
+
+
+
+    </script>
+
+</body>
+
+</html>
