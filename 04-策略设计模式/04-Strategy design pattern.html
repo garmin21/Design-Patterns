@@ -1,0 +1,84 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>04-Strategy design pattern</title>
+</head>
+<body>
+    
+
+
+<!-- 
+    策略模式： 一个问题有多种解决方案，甚至还会添加更多的解决方案，或者删除老的解决方案
+        商场有促销活动：
+            满100减10
+            满200减20
+            满300减30
+            ....
+-->
+
+
+<script>
+
+    const strategy = (function() {
+        const store = {}
+
+        // 添加打折内容的方法
+        Strategy['add'] = function(type, fn) {
+            if(store[type]) throw Error('这个打折活动已存在');
+            store[type] = fn;
+            
+        }
+
+        // // 删除打折内容的方法
+        Strategy['del'] = function(type) {
+            if(!store[type]) throw Error('这个打折活动不存在');
+            delete store[type];
+        }
+
+        // 
+        function Strategy(price, type) {
+            if(!store[type]) throw Error('未添加这个打折活动');
+            return store[type](price);
+        };
+        
+
+        return Strategy
+
+
+    })()
+    // 添加打折内容
+    strategy.add('100_10', (price) => { return price -= 10 })
+    strategy.add('200_20', (price) => { return price -= 20 })
+    strategy.add('300_30', (price) => { return price -= 30 })
+
+    // 删除打折内容
+    strategy.del('100_10')
+
+
+    // 得出促销活动打折后的金额
+    const result_price = strategy(200, '200_20'); 
+    // 得到打折促销活动的金额
+    console.dir(result_price); 
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
