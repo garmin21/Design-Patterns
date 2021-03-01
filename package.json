@@ -24,5 +24,8 @@
   },
   "devDependencies": {
     "git-cz": "^4.7.6"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
   }
 }
