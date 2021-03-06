@@ -136,3 +136,107 @@ namespace b {
 
 
 ## 属性装饰器
+
+```ts
+
+// 属性装饰器
+namespace G {
+
+    // 装饰静态属性
+
+    function ageStaticDecorator(target: any, key: any) {
+        console.log(`类的构造函数 : ${target}`, `装饰的属性名 : ${key}`)
+    }
+
+    // 装饰实例属性
+
+    function nameDecorator(target:any, key: any) {
+        console.log(`类的原型: ${target}`,`装饰的属性名 : ${key}`)
+    }
+
+
+    // 装饰静态方法
+
+
+    function showStaticDecorator(target:any, key: any, desc: any){
+        console.log(`类的构造函数: ${target}, 方法名: ${key}, 属性描述符: ${desc}`)
+    }
+
+
+    // 装饰实例方法
+
+    function runDecorator(target:any, key: any, desc: any){
+        console.log(`类的原型: ${target}, 方法名: ${key}, 属性描述符: ${desc}`)
+    }
+
+
+
+    class Person {
+
+        @ageStaticDecorator // 3
+        static age:number;
+
+        @nameDecorator // 1
+        public name: string | undefined;
+
+        @showStaticDecorator // 4
+        static show() {
+            console.log('开门')
+        }
+        @runDecorator // 2
+        public run() {
+            console.log(`跑步`)
+        }
+    }
+
+}
+
+
+// 执行步骤分别是 实例属性，实例方法 在然后到 静态属性，静态方法
+```
+
+
+## example
+
+```ts
+// 书写俩个例子装饰器
+
+
+// 只读属性装饰器
+function readonly(target: any, keyName: string) {
+    Object.defineProperty(target, keyName, {
+        writable: false // 修改属性为只读的
+    })
+}
+
+
+// 警告装饰器
+
+function smokesDesc(target:any, key:any, desc: any) {
+    let oldFn = desc.value;
+    desc.value = function(...args: any[]) {
+        const message = `警告信息: 类名${target.constructor.name} 方法名${key}`;
+        console.warn(message);
+        return oldFn(...args)
+    }
+}
+
+// 只读
+
+class Father {
+
+    @readonly
+    public money!: number;
+
+    @smokesDesc
+    public smokes() {
+        console.log('抽烟')
+    }
+}
+
+const f = new Father();
+
+f.smokes()
+
+
+```
